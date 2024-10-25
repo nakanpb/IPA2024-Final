@@ -18,6 +18,8 @@ import restconf_final as rest
 
 ACCESS_TOKEN = os.environ.get("WEBEX_ACCESS_TOKEN")
 
+# print("Access Token:", ACCESS_TOKEN)
+
 #######################################################################################
 # 3. Prepare parameters get the latest message for messages API.
 
@@ -37,6 +39,7 @@ while True:
 
     # the Webex Teams HTTP header, including the Authoriztion
     getHTTPHeader = {"Authorization": f"Bearer {ACCESS_TOKEN}"}
+
 
 # 4. Provide the URL to the Webex Teams messages API, and extract location from the received message.
 
@@ -66,15 +69,19 @@ while True:
     messages = json_data["items"]
 
     # store the text of the first message in the array
-    message = messages[0]["text"]
+    # message = messages[0]["text"]
+    
+    # message = messages[0]["text"]
+    message = ("/65070058 create")
     print("Received message: " + message)
-
     # check if the text of the message starts with the magic character "/" followed by your studentID and a space and followed by a command name
     #  e.g.  "/66070123 create"
-    if message.startswith("/65070058") == 0:
+   
+    if message.startswith("/65070058") == True:
 
         # extract the command
         command = message.split()[1]
+    
         print(command)
 
 # 5. Complete the logic for each command
@@ -147,7 +154,8 @@ while True:
         r = requests.post(
             "https://webexapis.com/v1/messages",
             data=json.dumps(postData),
-            headers=postHTTPHeaders)
+            headers=HTTPHeaders
+            )
         if not r.status_code == 200:
             raise Exception(
                 "Incorrect reply from Webex Teams API. Status code: {}".format(
